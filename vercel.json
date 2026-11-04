@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/:familia",
+      "destination": "/index.html"
+    }
+  ]
+}
