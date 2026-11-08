@@ -1348,6 +1348,15 @@ main > section.section.countdown-section {
 }
 </style>
 <!-- Cambios solicitados: sección 2 con el mismo fondo continuo de la sección 3 + sección 4 rediseñada. -->
+<!-- Precarga del fondo compartido: disponible antes de desplazarse. -->
+<link rel="preload" as="image" href="imagenes/recurso_08.jpg" fetchpriority="high"/>
+<style id="seccion-2-fondo-visible-desde-inicio">
+/* El efecto reveal ocultaba también el fondo completo hasta entrar en pantalla. */
+main > section#cuenta-regresiva.section.countdown-section.reveal {
+  opacity:1!important;
+  transform:none!important;
+}
+</style>
 <style id="ajustes-secciones-2-y-4-nov-2026">
 /* SECCIÓN 2 · misma imagen (recurso_08.jpg) que la sección 3, continuando sin corte.
    Veladura blanca igual de intensa que Confirmación (.74); en los últimos 110px baja a .48
