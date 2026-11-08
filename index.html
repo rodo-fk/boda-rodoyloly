@@ -1347,10 +1347,67 @@ main > section.section.countdown-section {
   background-repeat:no-repeat!important;
 }
 </style>
+<!-- Cambios solicitados: sección 2 con el mismo fondo continuo de la sección 3 + sección 4 rediseñada. -->
+<style id="ajustes-secciones-2-y-4-nov-2026">
+/* SECCIÓN 2 · misma imagen (recurso_08.jpg) que la sección 3, continuando sin corte.
+   Veladura blanca igual de intensa que Confirmación (.74); en los últimos 110px baja a .48
+   (la veladura de la sección 3) para que el paso entre secciones no se note. */
+main > section#cuenta-regresiva.section.countdown-section{
+  background-color:#e9ede3!important;
+  background-image:
+    linear-gradient(to bottom,rgba(255,253,247,.74) 0,rgba(255,253,247,.74) calc(100% - 110px),rgba(255,253,247,.48) 100%),
+    url("imagenes/recurso_08.jpg")!important;
+  background-size:100% 100%,100% auto!important;
+  background-repeat:no-repeat,repeat-y!important;
+  background-position:center top,center calc(-1 * var(--fondo-offset,0px))!important;
+  border:0!important;
+}
+
+/* SECCIÓN 4 · más compacta y legible */
+main > section#padres.section.garden-info-section.garden-parents{
+  padding:clamp(34px,7vw,64px) 18px!important;
+}
+main > section#padres .garden-info-inner{max-width:640px!important;}
+main > section#padres .invitation-parents-card{
+  background:rgba(255,252,245,.68)!important;
+  border:1px solid rgba(88,104,72,.30)!important;
+  outline:1px solid rgba(88,104,72,.16)!important;
+  outline-offset:-7px!important;
+  box-shadow:0 8px 26px rgba(52,64,46,.08)!important;
+  padding:clamp(26px,6vw,40px) clamp(18px,5vw,34px)!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+main > section#padres .parents-blessing{
+  font-size:clamp(1.5rem,6.6vw,2.1rem)!important;
+  font-weight:600!important;
+  line-height:1.25!important;
+  letter-spacing:.005em!important;
+  color:#33402d!important;
+  max-width:none!important;
+  margin:0 auto 14px!important;
+  text-wrap:balance;
+}
+main > section#padres .editorial-divider{width:38px;height:1px;background:#8d987b;margin:0 auto 18px!important;}
+main > section#padres .parent-names{display:grid!important;grid-template-columns:1fr;gap:16px!important;max-width:none!important;margin:0 auto!important;}
+main > section#padres .parent-group{text-align:center;}
+main > section#padres .parents-fine-rule{width:min(110px,40%)!important;margin:0 auto 10px!important;}
+main > section#padres .parent-group p{
+  font-size:clamp(1.12rem,4.9vw,1.4rem)!important;
+  font-weight:600!important;
+  line-height:1.3!important;
+  color:#3a4634!important;
+  margin:0 0 4px!important;
+}
+@media(min-width:640px){
+  main > section#padres .parent-names{grid-template-columns:1fr 1fr;gap:28px!important;}
+  main > section#padres .parent-group p{font-size:1.2rem!important;}
+}
+</style>
 </head><body>
 <header aria-label="Portada" class="hero"><div class="hero-inner"><h1>LOLY <em>&amp;</em> RODO</h1><div aria-label="10 de Abril del 2027" class="hero-date hero-date-ornament"><span aria-hidden="true" class="date-line"></span><span class="date-copy">10 de Abril del 2027</span><span aria-hidden="true" class="date-line"></span></div></div><a aria-label="Desliza hacia abajo para ver la invitación" class="scroll-cue" href="#contenido"><span>DESLIZA</span><svg aria-hidden="true" height="22" viewbox="0 0 24 24" width="22"><path d="m5 9 7 7 7-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg></a></header>
 <main id="contenido">
-<section aria-labelledby="count-title" class="section wrap reveal countdown-section"><h2 class="titulo-seccion" id="count-title">Nuestro gran día</h2><div class="fine-rule"></div><p class="countdown-date">10 de abril de 2027</p><div aria-label="Tiempo restante para la boda" class="countdown"><div class="count"><strong id="days">—</strong><span>Días</span></div><div class="count"><strong id="hours">—</strong><span>Horas</span></div><div class="count"><strong id="minutes">—</strong><span>Minutos</span></div><div class="count"><strong id="seconds">—</strong><span>Segundos</span></div></div></section>
+<section aria-labelledby="count-title" class="section wrap reveal countdown-section" id="cuenta-regresiva"><h2 class="titulo-seccion" id="count-title">Nuestro gran día</h2><div class="fine-rule"></div><p class="countdown-date">10 de abril de 2027</p><div aria-label="Tiempo restante para la boda" class="countdown"><div class="count"><strong id="days">—</strong><span>Días</span></div><div class="count"><strong id="hours">—</strong><span>Horas</span></div><div class="count"><strong id="minutes">—</strong><span>Minutos</span></div><div class="count"><strong id="seconds">—</strong><span>Segundos</span></div></div></section>
 <section aria-label="Invitación especial" class="section invitation invitation-chapter" id="invitados"><div class="invitation-three-cards wrap"><article class="invitation-paper-card invitation-main-card reveal"><div class="invitation-chapter-inner"><div class="invitation-chapter-copy">
 <div class="editorial-topline" aria-hidden="true"><span></span><span class="editorial-monogram" role="img" aria-label="Monograma L y R entrelazadas"><svg class="lr-monogram-svg" viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><text x="15" y="112" class="lr-letter lr-letter-l">L</text><text x="60" y="148" class="lr-letter lr-letter-r">R</text></svg></span><span></span></div><h2 class="editorial-title">Hay momentos que<br><em>se viven juntos.</em></h2><div class="editorial-divider" aria-hidden="true"></div>
 
@@ -1363,7 +1420,7 @@ main > section.section.countdown-section {
 
 </div></article></div></section>
 <section aria-labelledby="parents-title" class="section garden-info-section garden-parents" id="padres"><div class="garden-info-inner wrap reveal"><article class="invitation-paper-card invitation-parents-card reveal">
-<h2 class="parents-blessing" id="parents-title">Con la bendición de Dios y el amor de nuestros papás.</h2>
+<h2 class="parents-blessing" id="parents-title">Con la bendición de Dios<br>y el amor de nuestros papás.</h2>
 <div class="editorial-divider" aria-hidden="true"></div>
 <div class="parent-names"><div class="parent-group"><div class="parents-fine-rule" aria-hidden="true"></div><p>Maria del Rosario Audirac Cabello</p><p>Jorge Torres Mendivil</p></div>
 <div class="parent-group"><div class="parents-fine-rule" aria-hidden="true"></div><p>Rodolfo Flores Frias</p><p>Maria de las Nieves Krin Rodoreda</p></div></div>
@@ -1391,7 +1448,7 @@ main > section.section.countdown-section {
 <ul class="gift-data">
 <li class="gift-row"><span class="gift-label">Banco</span><span class="gift-leader" aria-hidden="true"></span><span class="gift-value">Nombre del banco</span></li>
 <li class="gift-row"><span class="gift-label">Titular</span><span class="gift-leader" aria-hidden="true"></span><span class="gift-value">Nombre completo del titular</span></li>
-<li class="gift-row gift-row--clabe"><span class="gift-label">CLABE interbancaria</span><span class="gift-leader" aria-hidden="true"></span><span class="gift-value" data-copy="000000000000000000">000 000 00000000000 0</span></li>
+<li class="gift-row gift-row--clabe"><span class="gift-label">CLABE</span><span class="gift-leader" aria-hidden="true"></span><span class="gift-value" data-copy="000000000000000000">000 000 00000000000 0</span></li>
 </ul>
 <div class="gift-frame" aria-hidden="true"><span></span><i class="gift-diamond"></i><span></span></div>
 <div class="sr-only" id="gift-status" role="status" aria-live="polite"></div>
@@ -1559,14 +1616,14 @@ const PREVIEW=!RSVP_ENDPOINT; /* sin endpoint => vista previa: la respuesta aún
 })();
 const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}})},{threshold:.1}):null;document.querySelectorAll('.reveal').forEach(el=>observer?observer.observe(el):el.classList.add('visible'));
 </script><script id="fondo-continuo-3-secciones">
-/* Mantiene un único fondo continuo entre "Hay momentos…", "Con la bendición…" y "Formal". */
+/* Un único fondo continuo entre la cuenta regresiva (2), "Hay momentos…" (3), "Con la bendición…" (4) y "Formal". */
 (function(){
-  var els=['invitados','padres','codigo-vestimenta'].map(function(i){return document.getElementById(i);}).filter(Boolean);
+  var els=['cuenta-regresiva','invitados','padres','codigo-vestimenta'].map(function(i){return document.getElementById(i);}).filter(Boolean);
   if(els.length<2)return;
   function sync(){
-    var y=window.pageYOffset||0, base=els[0].getBoundingClientRect().top+y;
+    var base=els[0].offsetTop;
     els.forEach(function(el){
-      el.style.setProperty('--fondo-offset',Math.round(el.getBoundingClientRect().top+y-base)+'px');
+      el.style.setProperty('--fondo-offset',Math.round(el.offsetTop-base)+'px');
     });
   }
   sync();
