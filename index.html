@@ -1430,6 +1430,30 @@ main > section#padres .parent-group p {
   main > section#padres .parent-group p {font-size:clamp(.94rem,3.8vw,1.1rem)!important;}
 }
 </style>
+<style id="papas-papel-y-alineacion-con-invitacion">
+/* Igualar textura y geometría de las dos tarjetas, sin alterar el jardín de fondo. */
+main > section#padres .garden-info-inner {
+  width:min(calc(100% - 28px),760px)!important;
+  max-width:760px!important;
+  margin-inline:auto!important;
+}
+main > section#padres .invitation-parents-card {
+  width:100%!important;
+  max-width:100%!important;
+  margin:0 auto!important;
+  background-color:#f5f2e9!important;
+  background-image:url("imagenes/recurso_04.png")!important;
+  background-repeat:repeat!important;
+  background-size:139px 61px!important;
+  border:1px solid rgba(89,99,72,.17)!important;
+  outline:none!important;
+  box-shadow:0 20px 55px rgba(49,55,39,.11)!important;
+  padding:clamp(28px,6vw,64px) clamp(18px,6vw,64px)!important;
+  box-sizing:border-box!important;
+}
+/* Se eliminó únicamente la línea bajo el texto de la bendición. */
+main > section#padres .invitation-parents-card > .editorial-divider {display:none!important;}
+</style>
 </head><body>
 <header aria-label="Portada" class="hero"><div class="hero-inner"><h1>LOLY <em>&amp;</em> RODO</h1><div aria-label="10 de Abril del 2027" class="hero-date hero-date-ornament"><span aria-hidden="true" class="date-line"></span><span class="date-copy">10 de Abril del 2027</span><span aria-hidden="true" class="date-line"></span></div></div><a aria-label="Desliza hacia abajo para ver la invitación" class="scroll-cue" href="#contenido"><span>DESLIZA</span><svg aria-hidden="true" height="22" viewbox="0 0 24 24" width="22"><path d="m5 9 7 7 7-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg></a></header>
 <main id="contenido">
@@ -1447,7 +1471,6 @@ main > section#padres .parent-group p {
 </div></article></div></section>
 <section aria-labelledby="parents-title" class="section garden-info-section garden-parents" id="padres"><div class="garden-info-inner wrap reveal"><article class="invitation-paper-card invitation-parents-card reveal">
 <h2 class="parents-blessing" id="parents-title">Con la bendición de Dios<br>y el amor de nuestros papás.</h2>
-<div class="editorial-divider" aria-hidden="true"></div>
 <div class="parent-names"><div class="parent-group"><div class="parents-fine-rule" aria-hidden="true"></div><p>Maria del Rosario Audirac Cabello</p><p>Jorge Torres Mendivil</p></div>
 <div class="parent-group"><div class="parents-fine-rule" aria-hidden="true"></div><p>Rodolfo Flores Frias</p><p>Maria de las Nieves Krin Rodoreda</p></div></div>
 </article></div></section>
