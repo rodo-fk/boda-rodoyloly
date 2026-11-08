@@ -1303,6 +1303,27 @@ main > section h2.titulo-seccion + .fine-rule{width:78px;height:1px;background:#
 #regalos .gift-row {grid-template-columns:minmax(0,auto) minmax(12px,1fr) minmax(0,auto) !important;}
 #regalos .gift-value {grid-column:3 !important;}
 </style>
+<style id="rsvp-lista-elegante-2026">
+#confirmacion .rsvp2-card{max-width:680px;margin:0 auto;padding:clamp(22px,5vw,42px);background:rgba(255,253,247,.73);border:1px solid rgba(101,113,88,.23);border-radius:10px;box-shadow:0 12px 40px rgba(55,65,45,.055)}
+#confirmacion .rsvp-simple .rsvp2-intro{margin-bottom:24px}
+#confirmacion .rsvp-simple .rsvp2-family{font-size:clamp(1.7rem,5vw,2.45rem)}
+#confirmacion .rsvp-simple-hint{margin:8px 0 0;color:#626b59;font-size:.91rem}
+#confirmacion .rsvp-simple-list{list-style:none;margin:0;padding:0}
+#confirmacion .rsvp-simple-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0;border-bottom:1px solid rgba(81,91,66,.2)}
+#confirmacion .rsvp-simple-row:first-child{border-top:1px solid rgba(81,91,66,.2)}
+#confirmacion .rsvp-simple-name{flex:1;min-width:0;text-align:left;font-family:'Cormorant Garamond',serif;font-size:clamp(1.18rem,2.5vw,1.45rem);font-weight:500;color:#45513e;line-height:1.2}
+#confirmacion .rsvp-simple-choices{display:flex;gap:7px;flex-shrink:0}
+#confirmacion .rsvp-simple-option{appearance:none;cursor:pointer;border:1px solid rgba(81,91,66,.35);border-radius:5px;background:rgba(255,255,255,.45);color:#4b5943;padding:9px 12px;line-height:1.2;font-family:'DM Sans',sans-serif;font-size:.79rem;font-weight:500;transition:background .18s,color .18s,border-color .18s}
+#confirmacion .rsvp-simple-option:hover{background:rgba(81,91,66,.12)}
+#confirmacion .rsvp-simple-option[aria-pressed="true"]{background:#59684e;border-color:#59684e;color:#fff}
+#confirmacion .rsvp-simple-option:focus-visible{outline:2px solid #6a7958;outline-offset:3px}
+#confirmacion .rsvp-simple-row.is-missing .rsvp-simple-name{color:#9a5e4c}
+#confirmacion .rsvp-simple-foot{text-align:center;margin-top:26px}
+#confirmacion .rsvp-simple-summary{font-size:.84rem;color:#697260;margin-bottom:16px}
+#confirmacion .rsvp-simple-foot .rsvp2-submit{margin:0 auto;display:block;max-width:100%}
+#confirmacion .rsvp-simple-foot .rsvp2-status{margin-top:12px}
+@media(max-width:540px){#confirmacion .rsvp2-card{padding:24px 16px}#confirmacion .rsvp-simple-row{align-items:flex-start;flex-direction:column;gap:10px;padding:16px 0}#confirmacion .rsvp-simple-choices{width:100%}#confirmacion .rsvp-simple-option{flex:1;padding:11px 8px;font-size:.83rem}}
+</style>
 </head><body>
 <header aria-label="Portada" class="hero"><div class="hero-inner"><h1>LOLY <em>&amp;</em> RODO</h1><div aria-label="10 de Abril del 2027" class="hero-date hero-date-ornament"><span aria-hidden="true" class="date-line"></span><span class="date-copy">10 de Abril del 2027</span><span aria-hidden="true" class="date-line"></span></div></div><a aria-label="Desliza hacia abajo para ver la invitación" class="scroll-cue" href="#contenido"><span>DESLIZA</span><svg aria-hidden="true" height="22" viewbox="0 0 24 24" width="22"><path d="m5 9 7 7 7-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg></a></header>
 <main id="contenido">
@@ -1409,71 +1430,51 @@ const PREVIEW=!RSVP_ENDPOINT; /* sin endpoint => vista previa: la respuesta aún
 
  function renderForm(){
   card.replaceChildren();
-  const form=h('form','rsvp2-form');form.noValidate=true;
+  const form=h('form','rsvp2-form rsvp-simple');form.noValidate=true;
   const head=h('div','rsvp2-intro');
-  head.append(h('span','rsvp2-for','Invitación para'),h('span','rsvp2-family',family.label||'Nuestros invitados'),h('span','rsvp2-count',guests.length+' '+plural(guests.length,'invitado','invitados')));
+  head.append(h('span','rsvp2-for','Invitación para'),h('span','rsvp2-family',family.label||'Nuestros invitados'),h('p','rsvp-simple-hint','Por favor, indícanos quiénes nos acompañarán.'));
   form.append(head);
-  if(guests.length>1){
-   const tools=h('div','rsvp2-tools');const all=h('button','rsvp2-all','Asistiremos todos');all.type='button';
-   all.addEventListener('click',()=>{guests.forEach(g=>{answers[g.id]='yes';});sync();});
-   tools.append(all);form.append(tools);
-  }
-  const list=h('ul','rsvp2-arches');const rows=new Map();
+  const list=h('ul','rsvp-simple-list');const rows=new Map();
   guests.forEach((g,i)=>{
-   const li=h('li','rsvp2-arch');li.dataset.state=answers[g.id]||'pending';
-   const seal=h('span','rsvp2-seal',initials(g.name));seal.setAttribute('aria-hidden','true');
-   const nm=h('span','rsvp2-name',g.name);nm.id='rsvp-name-'+i;
-   const grp=h('div','rsvp2-choice');grp.setAttribute('role','radiogroup');grp.setAttribute('aria-labelledby',nm.id);
+   const li=h('li','rsvp-simple-row');li.dataset.state=answers[g.id]||'pending';
+   const nm=h('span','rsvp-simple-name',g.name);nm.id='rsvp-name-'+i;
+   const choices=h('div','rsvp-simple-choices');choices.setAttribute('role','group');choices.setAttribute('aria-labelledby',nm.id);
    [['yes','Asistirá'],['no','No asistirá']].forEach(([val,label])=>{
-    const lb=h('label','rsvp2-opt rsvp2-opt--'+val);
-    const inp=document.createElement('input');inp.type='radio';inp.name='rsvp-guest-'+i;inp.value=val;inp.checked=answers[g.id]===val;
-    inp.addEventListener('change',()=>{answers[g.id]=val;li.classList.remove('is-missing');sync();});
-    lb.append(inp,h('span','',label));grp.append(lb);
+    const btn=h('button','rsvp-simple-option rsvp-simple-option--'+val,label);btn.type='button';btn.dataset.value=val;
+    btn.setAttribute('aria-pressed',answers[g.id]===val?'true':'false');
+    btn.addEventListener('click',()=>{answers[g.id]=val;li.classList.remove('is-missing');sync();});
+    choices.append(btn);
    });
-   li.append(seal,nm,grp);list.append(li);rows.set(g.id,li);
+   li.append(nm,choices);list.append(li);rows.set(g.id,li);
   });
   form.append(list);
-
-  const det=h('details','rsvp2-msg');det.append(h('summary','','Dejar un mensaje para los novios (opcional)'));
-  const ta=document.createElement('textarea');ta.rows=4;ta.maxLength=400;ta.placeholder='Escribe aquí unas palabras para los novios…';ta.setAttribute('aria-label','Mensaje para los novios');ta.value=message;
-  ta.addEventListener('input',()=>{message=ta.value;});
-  det.open=Boolean(message);det.append(ta);form.append(det);
-
-  const foot=h('div','rsvp2-foot');
-  const summary=h('div','rsvp2-summary');
-  const dots=h('span','rsvp2-dots');dots.setAttribute('aria-hidden','true');guests.forEach(()=>dots.append(document.createElement('i')));
-  const sumText=h('span','rsvp2-summary-text');summary.append(dots,sumText);
+  const foot=h('div','rsvp-simple-foot');
+  const sumText=h('div','rsvp-simple-summary');
   const submit=h('button','rsvp2-submit','Enviar confirmación');submit.type='submit';
   const status=h('div','rsvp2-status');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
-  foot.append(summary,submit,status);
+  foot.append(sumText,submit,status);
   if(PREVIEW)foot.append(h('div','rsvp2-preview','Vista previa: tus respuestas todavía no se guardan.'));
   form.append(foot);card.append(form);
-
   function sync(){
    let y=0,n=0;
-   guests.forEach((g,i)=>{
-    const s=answers[g.id]||'pending';const li=rows.get(g.id);li.dataset.state=s;
-    li.querySelectorAll('input').forEach(inp=>{inp.checked=inp.value===answers[g.id];});
-    dots.children[i].dataset.s=s;
-    if(s==='yes')y++;else if(s==='no')n++;
+   guests.forEach(g=>{
+    const state=answers[g.id]||'pending';const li=rows.get(g.id);li.dataset.state=state;
+    li.querySelectorAll('button[data-value]').forEach(btn=>btn.setAttribute('aria-pressed',btn.dataset.value===state?'true':'false'));
+    if(state==='yes')y++;else if(state==='no')n++;
    });
-   const p=guests.length-y-n;const parts=[];
-   if(y)parts.push(y+' '+plural(y,'asistirá','asistirán'));
-   if(n)parts.push(n+' no '+plural(n,'asistirá','asistirán'));
-   if(p)parts.push(p+' por responder');
-   sumText.textContent=p===guests.length?'Responde por cada invitado':parts.join(' · ');
+   const pending=guests.length-y-n;
+   sumText.textContent=pending?pending+' '+plural(pending,'persona pendiente','personas pendientes'):'Todas las respuestas están listas';
    status.textContent='';status.classList.remove('is-error');
   }
-
   form.addEventListener('submit',async ev=>{
    ev.preventDefault();
    const missing=guests.filter(g=>!answers[g.id]);
    if(missing.length){
-    missing.forEach(g=>{const li=rows.get(g.id);li.classList.remove('is-missing');void li.offsetWidth;li.classList.add('is-missing');});
-    status.textContent=missing.length===1?'Falta responder por 1 invitado.':'Faltan '+missing.length+' invitados por responder.';status.classList.add('is-error');
+    missing.forEach(g=>rows.get(g.id).classList.add('is-missing'));
+    status.textContent=missing.length===1?'Falta responder por 1 invitado.':'Faltan '+missing.length+' invitados por responder.';
+    status.classList.add('is-error');
     const first=rows.get(missing[0].id);first.scrollIntoView({block:'center',behavior:'smooth'});
-    const inp=first.querySelector('input');if(inp)inp.focus({preventScroll:true});
-    return;
+    const btn=first.querySelector('button');if(btn)btn.focus({preventScroll:true});return;
    }
    submit.disabled=true;submit.setAttribute('aria-busy','true');submit.textContent='Enviando…';
    try{
