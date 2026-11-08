@@ -1468,6 +1468,40 @@ main > section#padres.section.garden-info-section.garden-parents {
   main > section#padres.section.garden-info-section.garden-parents {padding-top:1px!important;}
 }
 </style>
+<style id="ajuste-final-bendicion-tipografia">
+/* Bendición más discreta, sin alterar el resto de la composición. */
+main > section#padres .parents-blessing {
+  font-size:clamp(1.08rem,2.35vw,1.38rem)!important;
+  line-height:1.32!important;
+  font-weight:400!important;
+  margin-bottom:12px!important;
+}
+@media(max-width:540px){
+  main > section#padres .parents-blessing {font-size:clamp(1.02rem,4.1vw,1.18rem)!important;}
+}
+</style>
+<style id="cartas-ancho-identico-final">
+/* Ambas cartas comparten exactamente el mismo ancho exterior y eje central. */
+main > section#invitados .invitation-three-cards,
+main > section#padres .garden-info-inner {
+  width:min(760px, calc(100vw - 64px)) !important;
+  max-width:760px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  box-sizing:border-box !important;
+}
+main > section#invitados .invitation-main-card,
+main > section#invitados .invitation-main-card .invitation-chapter-inner,
+main > section#padres .invitation-parents-card {
+  width:100% !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+}
+@media(max-width:600px){
+  main > section#invitados .invitation-three-cards,
+  main > section#padres .garden-info-inner {width:calc(100vw - 40px) !important;}
+}
+</style>
 </head><body>
 <header aria-label="Portada" class="hero"><div class="hero-inner"><h1>LOLY <em>&amp;</em> RODO</h1><div aria-label="10 de Abril del 2027" class="hero-date hero-date-ornament"><span aria-hidden="true" class="date-line"></span><span class="date-copy">10 de Abril del 2027</span><span aria-hidden="true" class="date-line"></span></div></div><a aria-label="Desliza hacia abajo para ver la invitación" class="scroll-cue" href="#contenido"><span>DESLIZA</span><svg aria-hidden="true" height="22" viewbox="0 0 24 24" width="22"><path d="m5 9 7 7 7-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg></a></header>
 <main id="contenido">
@@ -1479,14 +1513,14 @@ main > section#padres.section.garden-info-section.garden-parents {
 <p class="invitation-chapter-second">Nos haría muy felices que nos acompañaras a celebrar este nuevo capítulo.</p>
 </div>
 <div class="invitation-chapter-addressee"><span class="invitation-chapter-to">CON MUCHO CARIÑO PARA</span><h3 class="invite-family" id="invite-family">Nuestros queridos invitados</h3><ul aria-label="Personas invitadas" class="invite-names" id="invite-names"></ul></div>
-<p class="invitation-chapter-signature"><span class="signature-line" aria-hidden="true"></span><span>Loly &amp; Rodo</span></p>
+
 <p class="note" id="invite-note">Los nombres de tu invitación aparecerán aquí al abrir tu enlace personalizado.</p>
 
 </div></article></div></section>
 <section aria-labelledby="parents-title" class="section garden-info-section garden-parents" id="padres"><div class="garden-info-inner wrap reveal"><article class="invitation-paper-card invitation-parents-card reveal">
 <h2 class="parents-blessing" id="parents-title">Con la bendición de Dios<br>y el amor de nuestros papás.</h2>
-<div class="parent-names"><div class="parent-group"><div class="parents-fine-rule" aria-hidden="true"></div><p>Maria del Rosario Audirac Cabello</p><p>Jorge Torres Mendivil</p></div>
-<div class="parent-group"><div class="parents-fine-rule" aria-hidden="true"></div><p>Rodolfo Flores Frias</p><p>Maria de las Nieves Krin Rodoreda</p></div></div>
+<div class="parent-names"><div class="parent-group"><div class="parents-fine-rule" aria-hidden="true"></div><p>Maria del Rosario Audirac</p><p>Jorge Torres</p></div>
+<div class="parent-group"><div class="parents-fine-rule" aria-hidden="true"></div><p>Maria de las Nieves Krin</p><p>Rodolfo Flores</p></div></div>
 </article></div></section>
 <section aria-labelledby="dress-title" class="garden-info-section garden-dress" id="codigo-vestimenta">
   <div class="garden-info-inner wrap reveal">
