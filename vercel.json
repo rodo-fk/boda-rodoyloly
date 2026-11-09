@@ -1,8 +1,7 @@
 {
-  "rewrites": [
-    {
-      "source": "/((?!imagenes/|fuentes/|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$).*)",
-      "destination": "/index.html"
-    }
+  "version": 2,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
