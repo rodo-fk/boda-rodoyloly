@@ -1697,7 +1697,7 @@ main > section#codigo-vestimenta .dress-simple-content { padding-top: 13px !impo
 <p class="invite-message" id="invite-message">Y el nuestro no estaría completo sin las personas que han formado parte de nuestra historia.</p>
 <p class="invitation-chapter-second">Nos haría muy felices que nos acompañaras a celebrar este nuevo capítulo.</p>
 </div>
-<div class="invitation-chapter-addressee"><span class="invitation-chapter-to">CON MUCHO CARIÑO PARA</span><h3 class="invite-family" id="invite-family">Nuestros queridos invitados</h3><ul aria-label="Personas invitadas" class="invite-names" id="invite-names"></ul></div>
+<div class="invitation-chapter-addressee"><span class="invitation-chapter-to">CON MUCHO CARIÑO PARA</span><ul aria-label="Personas invitadas" class="invite-names" id="invite-names"></ul></div>
 <p class="note" id="invite-note">Los nombres de tu invitación aparecerán aquí al abrir tu enlace personalizado.</p>
 </div></article></div></section>
 <section aria-labelledby="parents-title" class="section garden-info-section garden-parents" id="padres"><div class="garden-info-inner wrap reveal"><article class="invitation-paper-card invitation-parents-card reveal">
@@ -1738,7 +1738,7 @@ main > section#codigo-vestimenta .dress-simple-content { padding-top: 13px !impo
 const RSVP_ENDPOINT = '';
 /* Datos de muestra para probar el diseño. Sustituiremos esto por una lista gestionada desde Google Sheets. */
 const FAMILIES = {
-  'familiaperez': {label:'Familia Pérez', guests:[{id:'perez-1',name:'Carlos Pérez'},{id:'perez-2',name:'Mariana Pérez'},{id:'perez-3',name:'Sofía Pérez'},{id:'perez-4',name:'Diego Pérez'},{id:'perez-5',name:'Lucía Pérez'}]}
+  'familiaperez': {label:'Invitación de ejemplo', guests:[{id:'perez-1',name:'Carlos Pérez'},{id:'perez-2',name:'Mariana Pérez'},{id:'perez-3',name:'Sofía Pérez'},{id:'perez-4',name:'Diego Pérez'},{id:'perez-5',name:'Lucía Pérez'}]}
 };
 const urlParams=new URLSearchParams(location.search);
 const slug = (urlParams.has('demo')?'familiaperez':(urlParams.get('familia')||decodeURIComponent(location.pathname.replace(/^\/+|\/+$/g,'')))).toLowerCase();
@@ -1747,11 +1747,9 @@ let family = FAMILIES[slug] || null;
 if(family&&urlParams.get('demo')==='confirmado'){family=Object.assign({},family,{responded:true,guests:family.guests.map((g,i)=>Object.assign({},g,{attending:i<3}))});}
 const DEFAULT_INVITE_MESSAGE = 'Hay momentos en la vida que se vuelven aún más especiales cuando se comparten con las personas que queremos.\n\nNos llenaría de alegría contar con su presencia para celebrar el comienzo de esta nueva etapa juntos.';
 function showInvitation(data){
-  const title=document.getElementById('invite-family');
   const names=document.getElementById('invite-names');
   const message=document.getElementById('invite-message');
   const note=document.getElementById('invite-note');
-  title.textContent=data.label||'Nuestros queridos invitados';
   names.replaceChildren();
   for(const guest of (data.guests||[])){
     const li=document.createElement('li');
@@ -1783,7 +1781,7 @@ const PREVIEW=!RSVP_ENDPOINT; /* sin endpoint => vista previa: la respuesta aún
  function renderEmpty(){
   card.replaceChildren();
   const box=h('div','rsvp2-empty');box.innerHTML=ENV;
-  box.append(h('div','rsvp2-empty-title','Tu confirmación es personal'),h('div','rsvp2-empty-text','Abre el enlace que te enviamos con el nombre de tu familia para responder por cada invitado.'));
+  box.append(h('div','rsvp2-empty-title','Tu confirmación es personal'),h('div','rsvp2-empty-text','Abre tu enlace personalizado para confirmar la asistencia de las personas invitadas.'));
   card.append(box);
  }
 
@@ -1791,7 +1789,7 @@ const PREVIEW=!RSVP_ENDPOINT; /* sin endpoint => vista previa: la respuesta aún
   card.replaceChildren();
   const form=h('form','rsvp2-form rsvp-simple');form.noValidate=true;
   const head=h('div','rsvp2-intro');
-  head.append(h('span','rsvp2-for','Invitación para'),h('span','rsvp2-family',family.label||'Nuestros invitados'),h('p','rsvp-simple-hint','Por favor, indícanos quiénes nos acompañarán.'));
+  head.append(h('span','rsvp2-for','Invitación para'),h('p','rsvp-simple-hint','Por favor, indícanos quiénes nos acompañarán.'));
   form.append(head);
   const list=h('ul','rsvp-simple-list');const rows=new Map();
   guests.forEach((g,i)=>{
@@ -1866,7 +1864,7 @@ const PREVIEW=!RSVP_ENDPOINT; /* sin endpoint => vista previa: la respuesta aún
  function renderThanks(){
   card.replaceChildren();
   const box=h('div','rsvp2-thanks');
-  const title=h('h3','','¡Gracias, '+(family.label||'querida familia')+'!');title.tabIndex=-1;box.append(title);
+  const title=h('h3','','¡Gracias por confirmar!');title.tabIndex=-1;box.append(title);
   const coming=guests.filter(g=>answers[g.id]==='yes');
   if(coming.length){
    box.append(h('div','rsvp2-thanks-text','Qué alegría saber que nos acompañarán'+(dateText?' el '+dateText:'')+'.'));
