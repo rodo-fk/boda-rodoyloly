@@ -1776,10 +1776,17 @@ async function cargarNombresDesdeSheets() {
       if (note) note.textContent = 'No encontramos una invitación asociada a este enlace.';
       return;
     }
-    showInvitation({
-      guests: data.invitados.map(persona => ({name: persona.nombre})),
-      message: data.mensaje || ''
-    });
+    family = {
+      label: data.nombre || '',
+      guests: data.invitados.map(persona => ({
+        id: persona.idInvitado,
+        name: persona.nombre,
+        attending: persona.asistencia === 'Asistirá' ? true :
+          persona.asistencia === 'No asistirá' ? false : undefined
+      }))
+    };
+    showInvitation({ guests: family.guests, message: data.mensaje || '' });
+    renderRSVP();
   } catch (error) {
     console.error('No fue posible consultar los nombres:', error);
     if (note) note.textContent = 'No pudimos cargar los nombres. Intenta actualizar la página.';
@@ -1791,7 +1798,7 @@ function countdown(){const diff=Math.max(0,weddingDate-Date.now());for(const [id
 countdown();setInterval(countdown,1000);
 /* ===== Confirmación por invitado ===== */
 const PREVIEW=!RSVP_ENDPOINT; /* sin endpoint => vista previa: la respuesta aún no se guarda */
-(function(){
+function renderRSVP(){
  const card=document.getElementById('rsvp-card');
  if(!card)return;
  const ENV='<svg class="rsvp2-env" viewBox="0 0 120 84" aria-hidden="true" focusable="false"><rect x="6" y="10" width="108" height="66" rx="3" fill="#fbf7f1" stroke="#b69a62" stroke-width="1.2"/><path d="M6 14l54 34 54-34" fill="none" stroke="#b69a62" stroke-width="1.2" stroke-linejoin="round"/><path d="M6 74l40-30M114 74L74 44" stroke="#c9bfa6" stroke-width="1" fill="none"/><circle cx="60" cy="50" r="7" fill="#596348"/><path d="M56.5 50l2.5 2.5 4.5-5" fill="none" stroke="#fbf7f1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -1925,7 +1932,8 @@ const PREVIEW=!RSVP_ENDPOINT; /* sin endpoint => vista previa: la respuesta aún
  if(family&&guests.length){
   if(family.responded&&guests.every(g=>answers[g.id]))renderConfirmed();else renderForm();
  }else renderEmpty();
-})();
+}
+renderRSVP();
 const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}})},{threshold:.1}):null;document.querySelectorAll('.reveal').forEach(el=>observer?observer.observe(el):el.classList.add('visible'));
 
 /* Mensaje opcional para los novios: envío independiente del RSVP. */
