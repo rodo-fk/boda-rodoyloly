@@ -1805,7 +1805,7 @@ main > section#codigo-vestimenta .dress-simple-content { padding-top: 13px !impo
 </main><footer><div class="names">Loly &amp; Rodo</div><p>10 · 04 · 2027  |  Cholula, Puebla</p></footer>
 <script>
 /* Cuando esté listo Google Apps Script, pega aquí la URL de implementación /exec. */
-const RSVP_ENDPOINT = '';
+const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwJPs5RazowwHMuYBYh-9_bjQBhaQlepRBupY_Jrg0wDS8H9Lz9m4tMR3ePNNh6jaNP/exec';
 /* Datos de muestra para probar el diseño. Sustituiremos esto por una lista gestionada desde Google Sheets. */
 const FAMILIES = {
   'familiaperez': {label:'Invitación de ejemplo', guests:[{id:'perez-1',name:'Carlos Pérez'},{id:'perez-2',name:'Mariana Pérez'},{id:'perez-3',name:'Sofía Pérez'},{id:'perez-4',name:'Diego Pérez'},{id:'perez-5',name:'Lucía Pérez'}]}
@@ -1853,7 +1853,9 @@ async function cargarNombresDesdeSheets() {
         name: persona.nombre,
         attending: persona.asistencia === 'Asistirá' ? true :
           persona.asistencia === 'No asistirá' ? false : undefined
-      }))
+      })),
+      responded: data.invitados.length > 0 && data.invitados.every(persona => ['Asistirá', 'No asistirá'].includes(persona.asistencia)),
+      rsvpAbierto: data.rsvpAbierto !== false
     };
     showInvitation({ guests: family.guests, message: data.mensaje || '' });
     renderRSVP();
@@ -1867,7 +1869,7 @@ const weddingDate = new Date('2027-04-10T14:00:00-06:00').getTime();
 function countdown(){const diff=Math.max(0,weddingDate-Date.now());for(const [id,n] of Object.entries({days:Math.floor(diff/86400000),hours:Math.floor(diff%86400000/3600000),minutes:Math.floor(diff%3600000/60000),seconds:Math.floor(diff%60000/1000)}))document.getElementById(id).textContent=String(n).padStart(2,'0');}
 countdown();setInterval(countdown,1000);
 /* ===== Confirmación por invitado ===== */
-const PREVIEW=!RSVP_ENDPOINT; /* sin endpoint => vista previa: la respuesta aún no se guarda */
+const PREVIEW=!RSVP_ENDPOINT; /* vista previa solo cuando no hay endpoint */
 function renderRSVP(){
  const card=document.getElementById('rsvp-card');
  if(!card)return;
@@ -1876,7 +1878,7 @@ function renderRSVP(){
  const plural=(n,one,many)=>n===1?one:many;
  const initials=name=>{const w=String(name).trim().split(/\s+/).filter(Boolean);if(!w.length)return '·';return (w[0].charAt(0)+(w.length>1?w[w.length-1].charAt(0):'')).toUpperCase();};
  const guests=family?(family.guests||[]).map(g=>typeof g==='string'?{id:g,name:g}:g):[];
- const answers={};const dietaryRestrictions={};let message='';
+ const answers={};const dietaryRestrictions={};
  const dateText=(()=>{try{return new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'America/Mexico_City'}).format(new Date(weddingDate)).replace(',','');}catch(e){return '';}})();
 
  function renderEmpty(){
@@ -1919,10 +1921,11 @@ function renderRSVP(){
   form.append(list);
   const foot=h('div','rsvp-simple-foot');
   const sumText=h('div','rsvp-simple-summary');
-  const submit=h('button','rsvp2-submit','Enviar confirmación');submit.type='submit';
+  const submit=h('button','rsvp2-submit',family&&family.rsvpAbierto===false?'Confirmaciones cerradas':'Enviar confirmación');submit.type='submit';submit.disabled=Boolean(family&&family.rsvpAbierto===false);
   const status=h('div','rsvp2-status');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
   foot.append(sumText,submit,status);
   if(PREVIEW)foot.append(h('div','rsvp2-preview','Vista previa: tus respuestas todavía no se guardan.'));
+  if(family&&family.rsvpAbierto===false)foot.append(h('div','rsvp2-preview','El periodo de confirmaciones ha cerrado.'));
   form.append(foot);card.append(form);
   function sync(){
    let y=0,n=0;
@@ -1949,10 +1952,11 @@ function renderRSVP(){
    try{
     if(PREVIEW){await new Promise(r=>setTimeout(r,650));}
     else{
-     const response=await fetch(RSVP_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({familySlug:slug,guests:guests.map(g=>({id:g.id,attending:answers[g.id]==='yes',dietaryRestriction:answers[g.id]==='yes'?(dietaryRestrictions[g.id]||'').trim():''})),message:message.trim()})});
+     const response=await fetch(RSVP_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({ruta:slug,respuestas:guests.map(g=>({idInvitado:g.id,asistencia:answers[g.id]==='yes'?'Asistirá':'No asistirá',restriccionesAlimenticias:answers[g.id]==='yes'?(dietaryRestrictions[g.id]||'').trim():''}))})});
      if(!response.ok)throw new Error('Error del servidor');
      const result=await response.json();if(!result.ok)throw new Error(result.error||'No se pudo guardar');
     }
+    if(family){family.responded=true;family.guests.forEach(g=>{g.attending=answers[g.id]==='yes';g.dietaryRestriction=answers[g.id]==='yes'?(dietaryRestrictions[g.id]||'').trim():'';});}
     renderThanks();
    }catch(error){
     status.textContent='No pudimos guardar tu respuesta. Inténtalo de nuevo en unos minutos.';status.classList.add('is-error');
@@ -1973,7 +1977,7 @@ function renderRSVP(){
   }else{
    box.append(h('div','rsvp2-thanks-text','Lamentamos que no puedan acompañarnos, pero agradecemos mucho que nos avisaran.'));
   }
-  const edit=h('button','rsvp2-edit','Modificar mi respuesta');edit.type='button';edit.addEventListener('click',renderForm);box.append(edit);
+  if(!family||family.rsvpAbierto!==false){const edit=h('button','rsvp2-edit','Modificar mi respuesta');edit.type='button';edit.addEventListener('click',renderForm);box.append(edit);}
   if(PREVIEW)box.append(h('div','rsvp2-preview','Vista previa: esta respuesta todavía no se guardó.'));
   card.append(box);title.focus({preventScroll:true});
   card.scrollIntoView({block:'nearest',behavior:'smooth'});
@@ -1984,8 +1988,7 @@ function renderRSVP(){
   const box=h('div','rsvp2-thanks');box.innerHTML=ENV;
   const title=h('h3','','Ya has confirmado tu asistencia');title.tabIndex=-1;box.append(title);
   const txt=h('div','rsvp2-thanks-text');
-  const edit=h('button','rsvp2-edit','haz clic aquí');edit.type='button';edit.addEventListener('click',renderForm);
-  txt.append('Si quieres cambiar tu respuesta, ',edit,'.');box.append(txt);
+  if(family&&family.rsvpAbierto===false){txt.textContent='El periodo de confirmaciones ha cerrado.';}else{const edit=h('button','rsvp2-edit','haz clic aquí');edit.type='button';edit.addEventListener('click',renderForm);txt.append('Si quieres cambiar tu respuesta, ',edit,'.');}box.append(txt);
   const ul=h('ul','rsvp2-roster');
   guests.forEach(g=>{
    const yes=answers[g.id]==='yes';
@@ -1996,7 +1999,7 @@ function renderRSVP(){
   box.append(ul);card.append(box);
  }
 
- if(family&&guests.length&&family.responded){
+ if(family&&guests.length){
   guests.forEach(g=>{if(typeof g.attending==='boolean')answers[g.id]=g.attending?'yes':'no';if(g.dietaryRestriction)dietaryRestrictions[g.id]=g.dietaryRestriction;});
  }
  if(family&&guests.length){
@@ -2015,7 +2018,7 @@ const observer='IntersectionObserver' in window?new IntersectionObserver(entries
  form.addEventListener('submit',async e=>{
   e.preventDefault();const text=field.value.trim();
   if(!text){status.textContent='Escribe un mensaje antes de enviarlo.';field.focus();return;}
-  if(!RSVP_ENDPOINT){status.textContent='Vista previa: el mensaje todavía no se guarda. Conectaremos Google Sheets para recibirlo.';return;}
+  status.textContent='El envío de mensajes todavía no está disponible. Próximamente podrás enviarnos tus palabras.';return;
   btn.disabled=true;status.textContent='Enviando…';
   try{
    const res=await fetch(RSVP_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'guestMessage',familySlug:slug,message:text})});
