@@ -1760,8 +1760,32 @@ function showInvitation(data){
   note.hidden=true;
 }
 if(family)showInvitation(family);
-/* Pendiente: consultar Google Sheets desde un endpoint protegido.
-   No publicamos nombres reales ni usamos la URL privada de Apps Script en el navegador. */
+/* Consultar solamente los nombres y el mensaje personalizado desde Google Sheets.
+   No se activa el envío de RSVP en esta etapa. */
+const INVITADOS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwJPs5RazowwHMuYBYh-9_bjQBhaQlepRBupY_Jrg0wDS8H9Lz9m4tMR3ePNNh6jaNP/exec';
+async function cargarNombresDesdeSheets() {
+  if (!slug || urlParams.has('demo')) return;
+  const note = document.getElementById('invite-note');
+  if (note) note.textContent = 'Estamos cargando los nombres de tu invitación…';
+  try {
+    const url = INVITADOS_ENDPOINT + '?ruta=' + encodeURIComponent(slug);
+    const response = await fetch(url, { method: 'GET', redirect: 'follow' });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const data = await response.json();
+    if (!data.encontrado || !Array.isArray(data.invitados)) {
+      if (note) note.textContent = 'No encontramos una invitación asociada a este enlace.';
+      return;
+    }
+    showInvitation({
+      guests: data.invitados.map(persona => ({name: persona.nombre})),
+      message: data.mensaje || ''
+    });
+  } catch (error) {
+    console.error('No fue posible consultar los nombres:', error);
+    if (note) note.textContent = 'No pudimos cargar los nombres. Intenta actualizar la página.';
+  }
+}
+cargarNombresDesdeSheets();
 const weddingDate = new Date('2027-04-10T14:00:00-06:00').getTime();
 function countdown(){const diff=Math.max(0,weddingDate-Date.now());for(const [id,n] of Object.entries({days:Math.floor(diff/86400000),hours:Math.floor(diff%86400000/3600000),minutes:Math.floor(diff%3600000/60000),seconds:Math.floor(diff%60000/1000)}))document.getElementById(id).textContent=String(n).padStart(2,'0');}
 countdown();setInterval(countdown,1000);
