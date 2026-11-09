@@ -1603,7 +1603,38 @@ main > section#invitados.section.invitation.invitation-chapter {
 .gift-wishes button:disabled{opacity:.6;cursor:wait}
 .gift-wishes-status{min-height:1.6em;margin-top:10px;font-size:.85rem;color:#4f5c3e}
 @media(max-width:600px){.rsvp-diet{padding:0}.gift-wishes{padding:0 6px}}
-</style></head><body>
+</style><style id="dresscode-tarjeta-papel-seccion-3-2026">
+/* Dresscode dentro de una tarjeta con la misma textura de papel que la invitación. */
+main > section#codigo-vestimenta .garden-info-inner {
+  width:min(760px, calc(100% - 0px)) !important;
+  max-width:760px !important;
+  margin-inline:auto !important;
+}
+main > section#codigo-vestimenta .dress-simple-content {
+  box-sizing:border-box !important;
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 auto !important;
+  padding:clamp(26px,5vw,48px) clamp(18px,5vw,48px) !important;
+  background-color:#f8f7f3 !important;
+  background-image:url("imagenes/recurso_07.png") !important;
+  background-repeat:repeat !important;
+  background-position:center top !important;
+  background-size:139px 93px !important;
+  border:1px solid rgba(89,99,72,.17) !important;
+  box-shadow:0 20px 55px rgba(49,55,39,.11) !important;
+  border-radius:0 !important;
+}
+@media(max-width:600px) {
+  main > section#codigo-vestimenta .garden-info-inner {
+    width:calc(100vw - 40px) !important;
+  }
+  main > section#codigo-vestimenta .dress-simple-content {
+    padding:26px 14px 22px !important;
+  }
+}
+</style>
+</head><body>
 <header aria-label="Portada" class="hero"><div class="hero-inner"><h1>LOLY <em>&amp;</em> RODO</h1><div aria-label="10 de Abril del 2027" class="hero-date hero-date-ornament"><span aria-hidden="true" class="date-line"></span><span class="date-copy">10 de Abril del 2027</span><span aria-hidden="true" class="date-line"></span></div></div><a aria-label="Desliza hacia abajo para ver la invitación" class="scroll-cue" href="#contenido"><span>DESLIZA</span><svg aria-hidden="true" height="22" viewbox="0 0 24 24" width="22"><path d="m5 9 7 7 7-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg></a></header>
 <main id="contenido">
 <section aria-labelledby="count-title" class="section wrap reveal countdown-section" id="cuenta-regresiva"><h2 class="titulo-seccion" id="count-title">Nuestro gran día</h2><div class="fine-rule"></div><p class="countdown-date">10 de abril de 2027</p><div aria-label="Tiempo restante para la boda" class="countdown"><div class="count"><strong id="days">—</strong><span>Días</span></div><div class="count"><strong id="hours">—</strong><span>Horas</span></div><div class="count"><strong id="minutes">—</strong><span>Minutos</span></div><div class="count"><strong id="seconds">—</strong><span>Segundos</span></div></div></section>
