@@ -1885,7 +1885,9 @@ async function cargarNombresDesdeSheets() {
         id: persona.idInvitado,
         name: persona.nombre,
         attending: persona.asistencia === 'Asistirá' ? true :
-          persona.asistencia === 'No asistirá' ? false : undefined
+          persona.asistencia === 'No asistirá' ? false : undefined,
+        // Restaurar la restricción guardada de cada invitado al modificar su RSVP.
+        dietaryRestriction: String(persona.restriccionesAlimenticias ?? persona.restriccionAlimenticia ?? '').trim()
       })),
       responded: data.invitados.length > 0 && data.invitados.every(persona => ['Asistirá', 'No asistirá'].includes(persona.asistencia)),
       rsvpAbierto: data.rsvpAbierto !== false
