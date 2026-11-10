@@ -2040,16 +2040,27 @@ const observer='IntersectionObserver' in window?new IntersectionObserver(entries
  const status=document.getElementById('wedding-wishes-status');
  const btn=form.querySelector('button[type="submit"]');
  form.addEventListener('submit',async e=>{
-  e.preventDefault();const text=field.value.trim();
-  if(!text){status.textContent='Escribe un mensaje antes de enviarlo.';field.focus();return;}
-  status.textContent='El envío de mensajes todavía no está disponible. Próximamente podrás enviarnos tus palabras.';return;
+  e.preventDefault();
+  const message=field.value.trim();
+  if(!message){status.textContent='Escribe un mensaje antes de enviarlo.';field.focus();return;}
+  if(!slug||urlParams.has('demo')||!family||!family.guests||!family.guests.length){
+   status.textContent='Abre tu invitación personalizada para enviar un mensaje.';return;
+  }
   btn.disabled=true;status.textContent='Enviando…';
   try{
-   const res=await fetch(RSVP_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'guestMessage',familySlug:slug,message:text})});
-   if(!res.ok)throw new Error('Error');const data=await res.json();if(!data.ok)throw new Error(data.error||'Error');
+   const res=await fetch(RSVP_ENDPOINT,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({accion:'mensaje',ruta:slug,mensaje:message})
+   });
+   if(!res.ok)throw new Error('Error del servidor');
+   const data=await res.json();
+   if(!data.ok)throw new Error(data.error||'No se pudo guardar el mensaje');
    field.value='';status.textContent='¡Gracias por sus palabras!';
-  }catch(err){status.textContent='No se pudo enviar el mensaje. Inténtalo de nuevo.';}
-  finally{btn.disabled=false;}
+  }catch(err){
+   console.error('Error al enviar mensaje:',err);
+   status.textContent='No se pudo enviar el mensaje. Inténtalo de nuevo.';
+  }finally{btn.disabled=false;}
  });
 })();
 </script><script id="fondo-continuo-3-secciones">
