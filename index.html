@@ -1863,9 +1863,19 @@ async function cargarNombresDesdeSheets() {
   if (note) note.textContent = 'Estamos cargando los nombres de tu invitación…';
   try {
     const url = INVITADOS_ENDPOINT + '?ruta=' + encodeURIComponent(slug);
-    const response = await fetch(url, { method: 'GET', redirect: 'follow' });
-    if (!response.ok) throw new Error('HTTP ' + response.status);
-    const data = await response.json();
+    let data;
+    for (let intento = 0; intento < 2; intento++) {
+      try {
+        const consulta = url + '&_=' + Date.now() + '-' + intento;
+        const response = await fetch(consulta, { method: 'GET', redirect: 'follow', cache: 'no-store' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        data = await response.json();
+        break;
+      } catch (error) {
+        if (intento === 1) throw error;
+        await new Promise(resolve => setTimeout(resolve, 1200));
+      }
+    }
     if (!data.encontrado || !Array.isArray(data.invitados)) {
       if (note) note.textContent = 'No encontramos una invitación asociada a este enlace.';
       return;
