@@ -1827,6 +1827,38 @@ main > section#codigo-vestimenta .dress-simple-content { padding-top: 13px !impo
 <div aria-live="polite" class="sr-only" id="gift-status" role="status"></div>
 </div><div class="gift-wishes"><h3>Déjennos un mensaje</h3><p>Si lo desean, pueden escribirnos unas palabras para recordar este día.</p><form id="wedding-wishes-form"><label class="sr-only" for="wedding-wishes-text">Mensaje para los novios (opcional)</label><textarea id="wedding-wishes-text" maxlength="1500" placeholder="Escribe aquí tu mensaje para Loly y Rodo…"></textarea><button type="submit">Enviar mensaje</button><div aria-live="polite" class="gift-wishes-status" id="wedding-wishes-status" role="status"></div></form></div></div></section>
 </main><footer><div class="names">Loly &amp; Rodo</div><p>10 · 04 · 2027  |  Cholula, Puebla</p><p style="font-size:0.6rem;letter-spacing:0.025em;margin-top:28px;opacity:0.52;text-transform:none;font-style:normal;font-weight:300;">Por los novios, con cariño</p></footer>
+
+<style id="bienvenida-invitacion-estilos">
+  #bienvenida-invitacion{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#f3f0e7;color:#525d43;text-align:center;padding:24px;opacity:1;transition:opacity .65s ease,visibility .65s ease}
+  #bienvenida-invitacion[hidden]{display:none!important}
+  #bienvenida-invitacion.saliendo{opacity:0;visibility:hidden;pointer-events:none}
+  .bienvenida-interior{width:min(100%,440px);border:1px solid #b3b9a5;padding:clamp(28px,7vw,55px) 22px}
+  .bienvenida-fecha{font-size:.7rem;letter-spacing:.24em;color:#788268}
+  .bienvenida-nombres{font-family:Georgia,serif;font-size:clamp(2.6rem,9vw,4.1rem);font-style:italic;font-weight:normal;margin:32px 0 12px}
+  .bienvenida-subtitulo{font-size:1rem;margin:0 0 36px}
+  .bienvenida-estado{font-size:.83rem;line-height:1.6;color:#6f795f}
+  .bienvenida-progreso{height:2px;background:#d9dccf;width:65%;margin:16px auto 0;overflow:hidden}
+  .bienvenida-progreso::before{content:"";display:block;width:35%;height:100%;background:#788268;animation:bienvenida-mover 1.4s ease-in-out infinite alternate}
+  @keyframes bienvenida-mover{from{transform:translateX(0)}to{transform:translateX(185%)}}
+  .bienvenida-acciones{display:none;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+  .bienvenida-acciones.visible{display:flex}
+  .bienvenida-acciones button{border:1px solid #788268;border-radius:2px;padding:10px 16px;background:transparent;color:#525d43;cursor:pointer;font:inherit;font-size:.85rem}
+  .bienvenida-acciones button:first-child{background:#596348;color:#fff}
+  @media(prefers-reduced-motion:reduce){#bienvenida-invitacion{transition:none}.bienvenida-progreso::before{animation:none}}
+</style>
+<div id="bienvenida-invitacion" hidden role="status" aria-live="polite">
+  <div class="bienvenida-interior">
+    <div class="bienvenida-fecha">10 · ABRIL · 2027</div>
+    <h2 class="bienvenida-nombres">Loly &amp; Rodo</h2>
+    <p class="bienvenida-subtitulo">¡Nos casamos!</p>
+    <div class="bienvenida-estado" id="bienvenida-estado">Preparando tu invitación…</div>
+    <div class="bienvenida-progreso" id="bienvenida-progreso"></div>
+    <div class="bienvenida-acciones" id="bienvenida-acciones">
+      <button type="button" id="bienvenida-reintentar">Reintentar</button>
+      <button type="button" id="bienvenida-continuar">Continuar sin personalización</button>
+    </div>
+  </div>
+</div>
 <script>
 /* Cuando esté listo Google Apps Script, pega aquí la URL de implementación /exec. */
 const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwJPs5RazowwHMuYBYh-9_bjQBhaQlepRBupY_Jrg0wDS8H9Lz9m4tMR3ePNNh6jaNP/exec';
@@ -1856,6 +1888,44 @@ function showInvitation(data){
 if(family)showInvitation(family);
 /* Consultar solamente los nombres y el mensaje personalizado desde Google Sheets.
    No se activa el envío de RSVP en esta etapa. */
+// Bienvenida solo para enlaces personalizados. No almacena datos en el navegador.
+const bienvenida = document.getElementById('bienvenida-invitacion');
+const bienvenidaEstado = document.getElementById('bienvenida-estado');
+const bienvenidaAcciones = document.getElementById('bienvenida-acciones');
+const bienvenidaProgreso = document.getElementById('bienvenida-progreso');
+const bienvenidaInicio = performance.now();
+const bienvenidaMinimaMs = 2000;
+let bienvenidaCerrada = false;
+function abrirBienvenida() {
+  if (!slug || urlParams.has('demo') || bienvenidaCerrada) return;
+  bienvenida.hidden = false;
+  document.documentElement.style.overflow = 'hidden';
+}
+function cerrarBienvenida() {
+  if (bienvenidaCerrada) return;
+  bienvenidaCerrada = true;
+  const espera = Math.max(0, bienvenidaMinimaMs - (performance.now() - bienvenidaInicio));
+  setTimeout(() => {
+    bienvenida.classList.add('saliendo');
+    document.documentElement.style.overflow = '';
+    setTimeout(() => { bienvenida.hidden = true; }, 700);
+  }, espera);
+}
+function errorBienvenida(texto) {
+  if (bienvenidaCerrada) return;
+  bienvenidaEstado.textContent = texto;
+  bienvenidaProgreso.hidden = true;
+  bienvenidaAcciones.classList.add('visible');
+}
+document.getElementById('bienvenida-reintentar').addEventListener('click', () => {
+  bienvenidaEstado.textContent = 'Preparando tu invitación…';
+  bienvenidaProgreso.hidden = false;
+  bienvenidaAcciones.classList.remove('visible');
+  cargarNombresDesdeSheets();
+});
+document.getElementById('bienvenida-continuar').addEventListener('click', cerrarBienvenida);
+abrirBienvenida();
+
 async function cargarNombresDesdeSheets() {
   if (!slug || urlParams.has('demo')) return;
   const note = document.getElementById('invite-note');
@@ -1877,6 +1947,7 @@ async function cargarNombresDesdeSheets() {
     }
     if (!data.encontrado || !Array.isArray(data.invitados)) {
       if (note) note.textContent = 'No encontramos una invitación asociada a este enlace.';
+      errorBienvenida('No encontramos una invitación asociada a este enlace.');
       return;
     }
     family = {
@@ -1894,9 +1965,11 @@ async function cargarNombresDesdeSheets() {
     };
     showInvitation({ guests: family.guests, message: data.mensaje || '' });
     renderRSVP();
+    cerrarBienvenida();
   } catch (error) {
     console.error('No fue posible consultar los nombres:', error);
     if (note) note.textContent = 'No pudimos cargar los nombres. Intenta actualizar la página.';
+    errorBienvenida('No pudimos cargar los nombres. Puedes reintentar.');
   }
 }
 cargarNombresDesdeSheets();
