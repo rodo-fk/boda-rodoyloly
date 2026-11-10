@@ -1862,18 +1862,18 @@ async function cargarNombresDesdeSheets() {
   const note = document.getElementById('invite-note');
   if (note) note.textContent = 'Estamos cargando los nombres de tu invitación…';
   try {
-    const url = INVITADOS_ENDPOINT + '?ruta=' + encodeURIComponent(slug);
+    // La ruta identifica a la familia; el parámetro temporal evita respuestas antiguas en caché.
+    // Reintentamos una vez únicamente si falla la conexión o la lectura del JSON.
     let data;
     for (let intento = 0; intento < 2; intento++) {
       try {
-        const consulta = url + '&_=' + Date.now() + '-' + intento;
-        const response = await fetch(consulta, { method: 'GET', redirect: 'follow', cache: 'no-store' });
+        const url = INVITADOS_ENDPOINT + '?ruta=' + encodeURIComponent(slug) + '&_t=' + Date.now() + '-' + intento;
+        const response = await fetch(url, { method: 'GET', redirect: 'follow', cache: 'no-store' });
         if (!response.ok) throw new Error('HTTP ' + response.status);
         data = await response.json();
         break;
       } catch (error) {
         if (intento === 1) throw error;
-        await new Promise(resolve => setTimeout(resolve, 1200));
       }
     }
     if (!data.encontrado || !Array.isArray(data.invitados)) {
@@ -1899,6 +1899,10 @@ async function cargarNombresDesdeSheets() {
   }
 }
 cargarNombresDesdeSheets();
+// Si el navegador restaura la página desde su historial, actualiza los invitados.
+window.addEventListener('pageshow', event => {
+  if (event.persisted) cargarNombresDesdeSheets();
+});
 const weddingDate = new Date('2027-04-10T14:00:00-06:00').getTime();
 function countdown(){const diff=Math.max(0,weddingDate-Date.now());for(const [id,n] of Object.entries({days:Math.floor(diff/86400000),hours:Math.floor(diff%86400000/3600000),minutes:Math.floor(diff%3600000/60000),seconds:Math.floor(diff%60000/1000)}))document.getElementById(id).textContent=String(n).padStart(2,'0');}
 countdown();setInterval(countdown,1000);
