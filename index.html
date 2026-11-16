@@ -1782,6 +1782,46 @@ main > section#codigo-vestimenta .dress-simple-content { padding-top: 13px !impo
   }
 }
 </style>
+<style id="ajuste-rotulos-itinerario">
+#detalles .event .info .eyebrow{font-size:clamp(.8rem,3.6vw,.92rem)!important;letter-spacing:.14em!important;font-weight:600!important;line-height:1.35}
+</style><style id="estacionamiento-invitados-2026">
+/* Sección independiente, sin modificar estilos ni funciones existentes. */
+main > section.section.parking-section {
+  background: #f2ebdd !important;
+  color: #48513e;
+  text-align: center;
+  padding: clamp(65px, 9vw, 110px) 20px;
+}
+.parking-section .parking-inner { max-width: 850px; margin: 0 auto; }
+.parking-section h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.7rem, 6vw, 4.7rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: #515b42;
+  margin: 0 0 16px;
+}
+.parking-section .parking-description {
+  max-width: 590px;
+  margin: 0 auto 28px;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.parking-section .parking-map {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(49, 55, 39, .10);
+}
+.parking-section .parking-button { margin-top: 30px; }
+@media (max-width: 600px) {
+  main > section.section.parking-section { padding: 65px 16px; }
+  .parking-section .parking-description { font-size: .95rem; }
+}
+</style>
 </head><body>
 <style id="bienvenida-invitacion-estilos">
   #bienvenida-invitacion{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:#657158 url("imagenes/recurso_01.jpg") center center/cover no-repeat;color:#525d43;text-align:center;padding:24px;opacity:1;transition:opacity .65s ease,visibility .65s ease}
@@ -1858,6 +1898,15 @@ html.con-bienvenida #bienvenida-invitacion{display:flex}
 <article class="event"><div class="art"><img alt="Dibujo de la Parroquia de San Andrés Apóstol" loading="lazy" src="imagenes/recurso_11.jpg"/></div><div class="dot"></div><div class="info"><div class="eyebrow">Ceremonia religiosa</div><h3>Parroquia de<br/>San Andrés Apóstol</h3><p class="time">14:00 Hrs</p><p>San Andrés Cholula<br/>Puebla</p><a class="map-link" href="https://share.google/Mhm5NBDuQ7HLr5EzW" rel="noopener noreferrer" target="_blank">Ver ubicación</a></div></article>
 <article class="event"><div class="art"><img alt="Personas bailando en acuarela" loading="lazy" src="imagenes/recurso_12.jpg"/></div><div class="dot"></div><div class="info"><div class="eyebrow">Recepción</div><h3>Jardín Remedios<br/>Posada Señorial</h3><p class="time">14:45 Hrs</p><p>San Andrés Cholula<br/>Puebla</p><a class="map-link" href="https://share.google/Kg4JvuMIScvr4hI9h" rel="noopener noreferrer" target="_blank">Ver ubicación</a></div></article>
 </div></div></section>
+<section aria-labelledby="parking-title" class="section parking-section" id="estacionamiento">
+  <div class="parking-inner reveal">
+    <h2 id="parking-title">Estacionamiento para invitados</h2>
+    <div class="fine-rule"></div>
+    <p class="parking-description">Para facilitar tu llegada, consulta el croquis con las indicaciones desde Avenida 6 Oriente o abre la ruta directamente en Google Maps.</p>
+    <img class="parking-map" src="imagenes/croquis-estacionamiento.png" alt="Croquis ilustrado del estacionamiento para invitados, con flechas desde Avenida 6 Oriente" loading="lazy" width="1536" height="1024"/>
+    <a class="map-link parking-button" href="https://www.google.com/maps/dir/?api=1&amp;destination=19.050305%2C-98.298482&amp;travelmode=driving" target="_blank" rel="noopener noreferrer" aria-label="Cómo llegar al estacionamiento en Google Maps">Cómo llegar al estacionamiento</a>
+  </div>
+</section>
 <section aria-labelledby="rsvp-title" class="section rsvp garden-info-section" id="confirmacion"><div class="wrap reveal rsvp2"><h2 class="titulo-seccion" id="rsvp-title">Confirma tu asistencia</h2><div class="fine-rule"></div><div class="rsvp2-card" id="rsvp-card"><noscript><div class="rsvp2-empty-text">Activa JavaScript para confirmar tu asistencia.</div></noscript></div></div></section>
 <section aria-labelledby="gift-title" class="section gift reveal garden-info-section" id="regalos"><div class="wrap">
 <h2 class="titulo-seccion" id="gift-title">Mesa de regalos</h2><div class="fine-rule"></div>
@@ -1873,7 +1922,7 @@ html.con-bienvenida #bienvenida-invitacion{display:flex}
 <div aria-hidden="true" class="gift-frame"><span></span><i class="gift-diamond"></i><span></span></div>
 <div aria-live="polite" class="sr-only" id="gift-status" role="status"></div>
 </div><div class="gift-wishes"><h3>Déjennos un mensaje</h3><p>Si lo desean, pueden escribirnos unas palabras para recordar este día.</p><form id="wedding-wishes-form"><label class="sr-only" for="wedding-wishes-text">Mensaje para los novios (opcional)</label><textarea id="wedding-wishes-text" maxlength="1500" placeholder="Escribe aquí tu mensaje para Loly y Rodo…"></textarea><button type="submit">Enviar mensaje</button><div aria-live="polite" class="gift-wishes-status" id="wedding-wishes-status" role="status"></div></form></div></div></section>
-</main><footer><div class="names">Loly &amp; Rodo</div><p>10 · 04 · 2027  |  Cholula, Puebla</p><p style="font-size:0.6rem;letter-spacing:0.025em;margin-top:28px;opacity:0.52;text-transform:none;font-style:normal;font-weight:300;">Por los novios, con cariño</p></footer>
+</main><footer><div class="names">Loly &amp; Rodo</div><p>10 · 04 · 2027  |  Cholula, Puebla</p><p style="font-size:0.6rem;letter-spacing:0.025em;margin-top:28px;opacity:0.52;text-transform:none;font-style:normal;font-weight:300;">Desarrollado por los novios, con cariño.</p></footer>
 
 
 
