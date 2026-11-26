@@ -1744,7 +1744,7 @@ main > section#codigo-vestimenta .dress-simple-content { padding-top: 13px !impo
 /* Horarios destacados y legibles en escritorio y celular */
 #detalles .event .info p.time {
   font-family: 'Manrope', sans-serif !important;
-  font-size: clamp(1.05rem, 2.7vw, 1.85rem) !important;
+  font-size: clamp(1.65rem, 4vw, 2.65rem) !important;
   font-weight: 500 !important;
   line-height: 1.2 !important;
   letter-spacing: -0.035em !important;
@@ -1754,7 +1754,7 @@ main > section#codigo-vestimenta .dress-simple-content { padding-top: 13px !impo
 }
 @media (max-width: 620px) {
   #detalles .event .info p.time {
-    font-size: clamp(0.92rem, 3.8vw, 1.23rem) !important;
+    font-size: clamp(1.45rem, 5.8vw, 1.9rem) !important;
   }
 }
 </style>
@@ -1822,6 +1822,28 @@ main > section.section.parking-section {
   .parking-section .parking-description { font-size: .95rem; }
 }
 </style>
+<style id="regalos-compactos">
+#regalos{padding-block:clamp(42px,7vw,76px)!important}
+#regalos .gift-menu{max-width:490px}
+#regalos .gift-leader{display:none!important}
+#regalos .gift-data{margin:8px 0}
+#regalos .gift-row{grid-template-columns:82px minmax(0,1fr)!important;gap:4px 12px;padding:7px 0}
+#regalos .gift-label{grid-column:1;grid-row:1;letter-spacing:.12em}
+#regalos .gift-value{grid-column:2!important;grid-row:1;margin:0;text-align:left;font-size:clamp(.95rem,3.5vw,1.15rem)}
+#regalos .gift-row--clabe{grid-template-columns:82px minmax(0,1fr) auto!important}
+#regalos .gift-row--clabe .gift-value{font-size:clamp(.86rem,3.2vw,1.05rem);letter-spacing:0;white-space:nowrap}
+#regalos .gift-copy{grid-column:3;grid-row:1;min-width:0;padding:6px 10px;font-size:.8rem}
+#regalos p.gift-message{margin:0 auto 18px!important;line-height:1.5}
+#regalos .gift-menu p.gift-message{margin:10px auto 12px!important;font-size:.88rem!important}
+#regalos .gift-wishes{margin-top:18px}
+#regalos .gift-wishes textarea{min-height:80px}
+@media(max-width:520px){
+#regalos .gift-row,#regalos .gift-row--clabe{grid-template-columns:65px minmax(0,1fr)!important;column-gap:8px}
+#regalos .gift-row--clabe .gift-label{grid-column:1;grid-row:1}
+#regalos .gift-row--clabe .gift-value{grid-column:1 / -1!important;grid-row:2;justify-self:start;max-width:calc(100% - 76px)}
+#regalos .gift-copy{grid-column:2;grid-row:2;justify-self:end}
+}
+</style>
 </head><body>
 <style id="bienvenida-invitacion-estilos">
   #bienvenida-invitacion{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:#657158 url("imagenes/recurso_01.jpg") center center/cover no-repeat;color:#525d43;text-align:center;padding:24px;opacity:1;transition:opacity .65s ease,visibility .65s ease}
@@ -1876,7 +1898,7 @@ html.con-bienvenida #bienvenida-invitacion{display:flex}
 <section aria-label="Invitación especial" class="section invitation invitation-chapter" id="invitados"><div class="invitation-three-cards wrap"><article class="invitation-paper-card invitation-main-card reveal"><div class="invitation-chapter-inner"><div class="invitation-chapter-copy">
 <div aria-hidden="true" class="editorial-topline"><span></span><span aria-label="Monograma L y R entrelazadas" class="editorial-monogram" role="img"><svg aria-hidden="true" class="lr-monogram-svg" focusable="false" viewbox="0 0 170 170" xmlns="http://www.w3.org/2000/svg"><text class="lr-letter lr-letter-l" x="15" y="112">L</text><text class="lr-letter lr-letter-r" x="60" y="148">R</text></svg></span><span></span></div><h2 class="editorial-title">Hay momentos que<br/><em>se viven juntos.</em></h2><div aria-hidden="true" class="editorial-divider"></div>
 <p class="invite-message">Hay momentos en la vida que se vuelven aún más especiales al compartirlos con las personas que queremos. Hoy celebramos el comienzo de una nueva etapa y nos llena de alegría poder vivirla junto a ustedes.</p>
-<p class="invitation-chapter-second" id="invite-message">Nos haría muy felices que nos acompañaras a celebrar este nuevo capítulo.</p>
+<p class="invitation-chapter-second" id="invite-message">Nos dará mucho gusto que sean parte de este día tan especial para nosotros.</p>
 </div>
 <div class="invitation-chapter-addressee"><span class="invitation-chapter-to">CON MUCHO CARIÑO PARA</span><ul aria-label="Personas invitadas" class="invite-names" id="invite-names"></ul></div>
 <p class="note" id="invite-note">Los nombres de tu invitación aparecerán aquí al abrir tu enlace personalizado.</p>
@@ -1939,7 +1961,7 @@ const slug = (urlParams.has('demo')?'familiaperez':(urlParams.get('familia')||de
 let family = FAMILIES[slug] || null;
 /* Con Google Sheets, el servidor devolverá por familia: {label, responded:true/false, guests:[{id,name,attending:true/false}]}. */
 if(family&&urlParams.get('demo')==='confirmado'){family=Object.assign({},family,{responded:true,guests:family.guests.map((g,i)=>Object.assign({},g,{attending:i<3}))});}
-const DEFAULT_INVITE_MESSAGE = 'Nos haría muy felices que nos acompañaras a celebrar este nuevo capítulo.';
+const DEFAULT_INVITE_MESSAGE = 'Nos dará mucho gusto que sean parte de este día tan especial para nosotros.';
 function showInvitation(data){
   const names=document.getElementById('invite-names');
   const message=document.getElementById('invite-message');
