@@ -1816,7 +1816,8 @@ main > section.section.parking-section {
   border-radius: 8px;
   box-shadow: 0 12px 32px rgba(49, 55, 39, .10);
 }
-.parking-section .parking-button { margin-top: 30px; }
+.parking-section .parking-button { margin-top: 30px; background: var(--olive) !important; color: #fff !important; border-color: var(--olive) !important; }
+.parking-section .parking-button:hover { background: #414a35 !important; color: #fff !important; }
 @media (max-width: 600px) {
   main > section.section.parking-section { padding: 65px 16px; }
   .parking-section .parking-description { font-size: .95rem; }
@@ -1846,7 +1847,7 @@ main > section.section.parking-section {
 #regalos .gift-bank-card .gift-value{color:#35432f!important;font-size:1.07rem!important}
 #regalos .gift-bank-card .gift-bank-name .gift-value{font-weight:600;font-size:1.15rem!important}
 #regalos .gift-bank-card .gift-row--clabe{flex-direction:column;align-items:center!important;gap:4px!important;margin:12px 0 0;padding:12px 0 4px!important;border-top:1px solid #c3ceba}
-#regalos .gift-bank-card .gift-row--clabe .gift-label{font-size:.85rem!important;color:#526447!important}
+#regalos .gift-bank-card .gift-row--clabe .gift-label{font-size:.85rem!important;color:#526447!important;font-weight:700!important}
 #regalos .gift-bank-card .gift-row--clabe .gift-value{font-size:clamp(.88rem,4.2vw,1.22rem)!important;font-weight:600;letter-spacing:0!important;white-space:normal;font-variant-numeric:tabular-nums}
 #regalos .gift-bank-card p.gift-message{margin:10px auto 0!important;font-size:.88rem!important;color:#526447!important}
 </style>
@@ -1944,7 +1945,7 @@ html.con-bienvenida #bienvenida-invitacion{display:flex}
 <ul class="gift-data">
 <li class="gift-row gift-bank-name"><span class="gift-value">BBVA</span></li>
 <li class="gift-row"><span class="gift-value">Rodolfo Flores Kirn</span></li>
-<li class="gift-row gift-row--clabe"><span class="gift-label">CLABE interbancaria</span><span class="gift-value">0126 5001 5128 9188 05</span></li>
+<li class="gift-row gift-row--clabe"><span class="gift-label">CLABE</span><span class="gift-value">012650015128918805</span></li>
 </ul>
 <p class="gift-message">Concepto: Regalo + tu nombre.</p>
 <div aria-live="polite" class="sr-only" id="gift-status" role="status"></div>
